@@ -1,0 +1,14 @@
+{
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
+  "resources" : [
+    {
+      "filename" : "WechatIMG1-1.arreferenceimage"
+    },
+    {
+      "filename" : "WechatIMG1.arreferenceimage"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+PODS:
+  - AFNetworking (4.0.0):
+    - AFNetworking/NSURLSession (= 4.0.0)
+    - AFNetworking/Reachability (= 4.0.0)
+    - AFNetworking/Security (= 4.0.0)
+    - AFNetworking/Serialization (= 4.0.0)
+    - AFNetworking/UIKit (= 4.0.0)
+  - AFNetworking/NSURLSession (4.0.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (4.0.0)
+  - AFNetworking/Security (4.0.0)
+  - AFNetworking/Serialization (4.0.0)
+  - AFNetworking/UIKit (4.0.0):
+    - AFNetworking/NSURLSession
+  - SDWebImage (5.0.2):
+    - SDWebImage/Core (= 5.0.2)
+  - SDWebImage/Core (5.0.2)
+  - SSZipArchive (2.2.3)
+
+DEPENDENCIES:
+  - AFNetworking (= 4.0.0)
+  - SDWebImage (= 5.0.2)
+  - SSZipArchive
+
+SPEC REPOS:
+  trunk:
+    - AFNetworking
+    - SDWebImage
+    - SSZipArchive
+
+SPEC CHECKSUMS:
+  AFNetworking: d9fdf484a3c723ec3c558a41cc5754c7e845ee77
+  SDWebImage: 6764b5fa0f73c203728052955dbefa2bf1f33282
+  SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
+
+PODFILE CHECKSUM: 586def208ba3e4043104f10560d2a3342a4b874e
+
+COCOAPODS: 1.9.3
