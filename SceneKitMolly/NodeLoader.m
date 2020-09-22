@@ -59,12 +59,4 @@
     return node;
 }
 
-+ (SCNNode *)normalNodeWithName:(NSString *)name {
-    SCNScene *scene = [SCNScene sceneNamed:[NSString stringWithFormat:@"art.scnassets/%@",name]];
-    SCNNode *node = [[scene.rootNode clone] childNodeWithName:@"_3dxy" recursively:YES];
-    [node runAction:[SCNAction scaleTo:0.001 duration:0.1]];
-
-    return node;
-}
-
 @end

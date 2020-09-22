@@ -19,7 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (SCNNode *)vaseNode;
 + (SCNNode *)cupNode;
 + (SCNNode *)flowerNode;
-+ (SCNNode *)normalNodeWithName:(NSString *)name;
 
 @end
 
