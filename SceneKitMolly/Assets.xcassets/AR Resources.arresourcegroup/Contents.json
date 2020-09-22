@@ -5,10 +5,16 @@
   },
   "resources" : [
     {
-      "filename" : "WechatIMG1-1.arreferenceimage"
+      "filename" : "Art.arreferenceimage"
     },
     {
-      "filename" : "WechatIMG1.arreferenceimage"
+      "filename" : "Labubu.arreferenceimage"
+    },
+    {
+      "filename" : "Molly.arreferenceimage"
+    },
+    {
+      "filename" : "WechatIMG1-1.arreferenceimage"
     }
   ]
 }

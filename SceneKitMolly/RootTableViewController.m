@@ -38,8 +38,8 @@
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"itemArray"];
     
     
-    self.classArray = @[[GoodsDetailViewController class],[ScanSurfaceViewController class],[ScanImageViewController class],[ScanObjectViewController class]];
-    self.titleArray = @[@"下载模型并展示",@"检测平面，放置模型",@"检测图片，放置模型",@"检测特定物体，放置模型"];
+    self.classArray = @[[GoodsDetailViewController class],[ScanSurfaceViewController class],[ScanImageViewController class]];
+    self.titleArray = @[@"下载模型并展示",@"检测平面，放置模型",@"检测图片，放置模型"];
 }
 
 

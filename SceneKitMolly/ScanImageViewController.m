@@ -52,7 +52,7 @@
     [self setScene];
     [self setUI];
     [self configErrorView];
-    [self setGesture];
+//    [self setGesture];
     
 }
 
@@ -140,7 +140,6 @@
             // 开始 track 模式
             [self.sceneView.session runWithConfiguration:configuration options:ARSessionRunOptionResetTracking];
         }
-            
     }];
 
     
@@ -251,19 +250,44 @@
     [ToastHelper showToast:self text:@"已检测到图片,放置模型"];
     if (@available(iOS 11.3, *)) {
         if ([anchor isKindOfClass:[ARImageAnchor class]]) {
-            SCNNode *mollyNode = [NodeLoader mollyNodeRotate:NO];
-//            mollyNode.position = SCNVector3Make(0, -0.4, -0.2);
-            [mollyNode runAction:[SCNAction rotateByAngle:-M_PI / 2.f aroundAxis:SCNVector3Make(1, 0, 0) duration:0.5]];
+            ARImageAnchor *imageAnchor = (ARImageAnchor *)anchor;
+            if ([imageAnchor.referenceImage.name isEqualToString:@"Molly"]) {
+                // molly 放置模型
+                SCNNode *mollyNode = [NodeLoader mollyNodeRotate:NO];
+    //            mollyNode.position = SCNVector3Make(0, -0.4, -0.2);
+                [mollyNode runAction:[SCNAction rotateByAngle:-M_PI / 2.f aroundAxis:SCNVector3Make(1, 0, 0) duration:0.5]];
 
-            [node addChildNode:mollyNode];
-//            ARImageAnchor *imageAnchor = (ARImageAnchor *)anchor;
-//            SCNPlane *plane = [SCNPlane planeWithWidth:imageAnchor.referenceImage.physicalSize.width * 1.5 height:imageAnchor.referenceImage.physicalSize.height * 1.5];
-//
-//            SCNNode *planeNode = [SCNNode nodeWithGeometry:plane];
-//            self.planeNode = planeNode;
-//            planeNode.eulerAngles = SCNVector3Make(-M_PI / 2.f, 0, 0);
-//            planeNode.position = SCNVector3Make(anchor.transform.columns[3].x, anchor.transform.columns[3].y, anchor.transform.columns[3].z);
-//            [node addChildNode:planeNode];
+                [node addChildNode:mollyNode];
+            } else if([imageAnchor.referenceImage.name isEqualToString:@"Labubu"]){
+                // labubu 播放视频
+                CGFloat scale = 960.f / 544.f; // 视频宽高比
+                SCNPlane *plane = [SCNPlane planeWithWidth:imageAnchor.referenceImage.physicalSize.height * scale * 1.5 height:imageAnchor.referenceImage.physicalSize.height * 1.5];
+                
+                NSString * urlStr = [[NSBundle mainBundle] pathForResource:@"labubu.mp4" ofType:nil];
+                
+                NSURL *url = [NSURL fileURLWithPath:urlStr];
+                
+                AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:url];
+                
+                AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
+                
+                SCNMaterial * material = [[SCNMaterial alloc]init];
+                
+                material.diffuse.contents = player;
+                
+                plane.materials = @[material];
+                
+                [player play];
+                
+                SCNNode *planeNode = [SCNNode nodeWithGeometry:plane];
+                self.planeNode = planeNode;
+//                planeNode.eulerAngles = SCNVector3Make(-M_PI / 2.f, 0, 0);
+                planeNode.position = SCNVector3Make(anchor.transform.columns[3].x, anchor.transform.columns[3].y, anchor.transform.columns[3].z);
+                
+                
+                
+                [self.sceneView.scene.rootNode addChildNode:planeNode];
+            }
         }
     } 
 }

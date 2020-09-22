@@ -23,7 +23,11 @@
 @property (nonatomic, strong) SCNNode *currentTouchedNode;
 
 @property (nonatomic, strong) ARHitTestResult *initialHitTestResult;
+
 @property (nonatomic, strong) SCNNode *movedObject;
+
+/// 放置平面 node
+@property (nonatomic, strong) SCNNode *surfaceNode;
 
 @end
 
@@ -113,7 +117,8 @@
     
     self.sceneView = [[ARSCNView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
     [self.view addSubview:self.sceneView];
-    
+    self.sceneView.autoenablesDefaultLighting = YES;
+    self.sceneView.automaticallyUpdatesLighting = YES;
     // 初始化 configuration,用于检测横向平面,支持自动对焦
     ARWorldTrackingConfiguration *configuration = [[ARWorldTrackingConfiguration alloc] init];
     if (@available(iOS 11.3, *)) {
@@ -150,7 +155,7 @@
 
 - (void)addObjectToScene:(UITapGestureRecognizer *)recognizer {
     CGPoint holdPoint = [recognizer locationInView:self.sceneView];
-    SCNNode *node = [NodeLoader mollyNodeRotate:YES];
+    SCNNode *node = [NodeLoader mollyNodeRotate:NO];
     NSArray<ARHitTestResult *> *resultArray = [self.sceneView hitTest:holdPoint types:ARHitTestResultTypeExistingPlaneUsingExtent];//在已经检测到的平面区域查找点
     if (resultArray.count == 0) {
         return;
@@ -297,32 +302,46 @@
 #pragma mark - customDelegates
 
 #pragma mark - systemDelegates
-/*
- Implement this to provide a custom node for the given anchor.
- 
- @discussion This node will automatically be added to the scene graph.
- If this method is not implemented, a node will be automatically created.
- If nil is returned the anchor will be ignored.
- @param renderer The renderer that will render the scene.
- @param anchor The added anchor.
- @return Node that will be mapped to the anchor or nil.
- */
-//- (nullable SCNNode *)renderer:(id <SCNSceneRenderer>)renderer nodeForAnchor:(ARAnchor *)anchor {
-//    // 检测到 configuration 配置的物体后，会调用该方法，该方法返回 nil 的话，会自动向 scene 中添加一个 node
-//
-//
-//    SCNFloor *floor = [SCNFloor floor];
-//    floor.width = 0.1;
-//    floor.length = 0.1;
-//    SCNNode *floorNode = [SCNNode nodeWithGeometry:floor];
-//
-//    return floorNode;
-//}
 
 - (void)renderer:(id<SCNSceneRenderer>)renderer didAddNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor {
     [ToastHelper showToast:self text:@"已检测到表面,点击放置模型"];
+//    if ([anchor isKindOfClass:[ARPlaneAnchor class]]) {
+//        ARPlaneAnchor *planeAnchor = (ARPlaneAnchor *)anchor;
+//        CGFloat width = planeAnchor.extent.x;
+//        CGFloat height = planeAnchor.extent.z;
+//
+//        SCNPlane *plane = [SCNPlane planeWithWidth:width height:height];
+//        plane.materials.firstObject.diffuse.contents = [UIColor lightGrayColor];
+//        SCNNode *planeNode = [SCNNode nodeWithGeometry:plane];
+//
+//        CGFloat x = planeAnchor.center.x;
+//        CGFloat y = planeAnchor.center.y;
+//        CGFloat z = planeAnchor.center.z;
+//
+//        planeNode.position = SCNVector3Make(x, y, z);
+//        planeNode.eulerAngles = SCNVector3Make(-M_PI / 2.f, 0, 0);
+//        [node addChildNode:planeNode];
+//        self.surfaceNode = planeNode;
+//    }
 }
 
+- (void)renderer:(id<SCNSceneRenderer>)renderer didUpdateNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor {
+    if (self.surfaceNode) {
+        ARPlaneAnchor *planeAnchor = (ARPlaneAnchor *)anchor;
+        CGFloat width = planeAnchor.extent.x;
+        CGFloat height = planeAnchor.extent.z;
+        CGFloat x = planeAnchor.center.x;
+        CGFloat y = planeAnchor.center.y;
+        CGFloat z = planeAnchor.center.z;
+        
+        SCNPlane *plane = (SCNPlane *)self.surfaceNode.geometry;
+        plane.width = width;
+        plane.height = height;
+        
+        self.surfaceNode.position = SCNVector3Make(x, y, z);
+        
+    }
+}
 
 #pragma mark - getters and setters
 

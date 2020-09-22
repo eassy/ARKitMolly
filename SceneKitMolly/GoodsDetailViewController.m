@@ -10,6 +10,7 @@
 #import <SceneKit/SceneKit.h>
 #import "AFNetworking.h"
 #import "SSZipArchive.h"
+#import "ToastHelper.h"
 
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight [UIScreen mainScreen].bounds.size.height
@@ -178,6 +179,7 @@
         } else {
             [self.downloadBtn setTitle:@"下载失败，请重试" forState:UIControlStateNormal];
             self.downloadBtn.enabled = YES;
+            [ToastHelper showToast:self text:@"需要连接 POPMART 无线网，并且在 eassy 电脑上开启服务器"];
         }
         
         
